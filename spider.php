@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Spider {
 	public $url = null;
@@ -33,7 +33,7 @@ class Spider {
 		}
 		return $this->response_request['content_type'];
 	}
-	
+
 	public function getStatusCode() {
 		return (int) $this->response_request['http_code'];
 	}
@@ -54,7 +54,11 @@ class Spider {
 	}
 
 	public function setHeaders($headers) {
-		$this->headers = array($headers);
+		if($headers==='default'){
+			$this->headers = array("content-type: application/json");
+		}else{
+			$this->headers = array($headers);
+		}
 	}
 
 	public function auth($user, $passwd, $basic=false) {
