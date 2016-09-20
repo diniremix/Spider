@@ -1,11 +1,11 @@
 <?php
 
 class Spider {
-	public $url = null;
-	public $method = 'GET';
-	public $body = null;
-	public $headers = Array();
-	public $allow_redirect = true;
+	private $url = null;
+	private $method = 'GET';
+	private $body = null;
+	private $headers = Array();
+	private $allow_redirect = true;
 
 	private $response_request = null;
 	private $response_body = null;
@@ -13,8 +13,8 @@ class Spider {
 	private $response_code = null;
 	private $response_message = null;
 	private $response_error = null;
-	public $port = null;
-	public $curl = null;
+	private $port = null;
+	private $curl = null;
 
 	public function __construct($url, $method = 'GET') {
 		$this->url = $url;
