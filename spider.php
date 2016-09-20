@@ -39,6 +39,10 @@ class Spider {
 		return (int) $this->response_request['http_code'];
 	}
 
+	public function body($body=null) {
+		$this->body = $body;
+	}
+
 	public function getBody($type=null) {
 		if ($this->response_error) {
 		  echo "An error has occurred: " . $this->response_error;
@@ -92,7 +96,7 @@ class Spider {
 			$pass= 'hash 24 chars here';
 			array_push($this->headers, "authorization: Basic ".$pass);
 		}else{
-			$this->body = array('username'=>$user,'password'=>$passwd);
+			$this->body = json_encode(array('username'=>$user,'password'=>$passwd));
 		}
 	}
 
