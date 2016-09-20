@@ -40,6 +40,10 @@ class Spider {
 	}
 
 	public function getBody($type=null) {
+		if ($this->response_error) {
+		  echo "An error has occurred: " . $this->response_error;
+		  return false;
+		}
 		switch ($type) {
 			case 'json':
 				return json_decode(json_encode($this->response_body), true);
@@ -115,5 +119,4 @@ class Spider {
 		$this->response_error = curl_error($this->curl);
 		curl_close($this->curl);
 	}
-
 }
