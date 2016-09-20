@@ -6,6 +6,7 @@ class Spider {
 	private $body = null;
 	private $headers = Array();
 	private $allow_redirect = true;
+	private $timeout = 30;
 
 	private $response_request = null;
 	private $response_body = null;
@@ -22,7 +23,7 @@ class Spider {
 		$this->curl = curl_init();
 	}
 
-	public function response_request() {
+	public function getRequest() {
 		return $this->response_request;
 	}
 	public function getHeaderLine($line=null) {
@@ -53,12 +54,16 @@ class Spider {
 		return $this->response_headers;
 	}
 
-	public function setHeaders($headers) {
+	public function setHeader($headers) {
 		if($headers==='default'){
 			$this->headers = array("content-type: application/json");
 		}else{
 			$this->headers = array($headers);
 		}
+	}
+
+	public function addHeaders($headers) {
+		array_push($this->headers, $headers);
 	}
 
 	public function auth($user, $passwd, $basic=false) {
@@ -72,17 +77,19 @@ class Spider {
 	}
 
 	private function constructRequest() {
-		curl_setopt_array($this->curl, array(
-			CURLOPT_URL => $this->url,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => $this->method,
-			CURLOPT_POSTFIELDS => $this->body,
-			CURLOPT_HTTPHEADER => $this->headers,
-		));
+		curl_setopt_array($this->curl,
+			array(
+				CURLOPT_URL => $this->url,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => $this->timeout,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => $this->method,
+				CURLOPT_POSTFIELDS => $this->body,
+				CURLOPT_HTTPHEADER => $this->headers,
+			)
+		);
 	}
 	public function send() {
 		$this->constructRequest();
