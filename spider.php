@@ -7,6 +7,7 @@ class Spider {
 	private $headers = Array();
 	private $allow_redirect = true;
 	private $timeout = 30;
+	private $ssl_verify_peer = false;
 
 	private $response_request = null;
 	private $response_body = null;
@@ -15,6 +16,7 @@ class Spider {
 	private $response_message = null;
 	private $response_error = null;
 	private $curl = null;
+
 
 	public function __construct($url, $method = 'GET') {
 		$this->url = $url;
@@ -107,6 +109,7 @@ class Spider {
 				CURLOPT_RETURNTRANSFER => true,
 				CURLOPT_ENCODING => "",
 				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_SSL_VERIFYPEER, $this->ssl_verify_peer,
 				CURLOPT_TIMEOUT => $this->timeout,
 				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 				CURLOPT_CUSTOMREQUEST => $this->method,
