@@ -6,15 +6,16 @@ class Spider {
 	private $body = null;
 	private $headers = Array();
 	private $allow_redirect = true;
+	private $max_redirs = 10;
 	private $timeout = 30;
 	private $ssl_verify_peer = false;
-
 	private $response_request = null;
 	private $response_body = null;
 	private $response_headers = Array();
 	private $response_code = null;
 	private $response_message = null;
 	private $response_error = null;
+	private $response_error_number = CURLE_OK;
 	private $curl = null;
 
 
@@ -45,14 +46,27 @@ class Spider {
 		$this->body = $body;
 	}
 
+	public function hasError() {
+		return $this->response_error_number;
+	}
+
+	public function getErrorMessage() {
+		return $this->response_error;
+	}
+
 	public function getBody($type=null) {
-		if ($this->response_error) {
-		  echo "An error has occurred: " . $this->response_error;
-		  return false;
+		if ($this->response_error_number !== CURLE_OK) {
+		  return null;
 		}
+
 		switch ($type) {
+			case 'default':
 			case 'json':
 				return json_decode(json_encode($this->response_body), true);
+				break;
+			case 'xml':
+				$xml = simplexml_load_string($this->response_body);
+				return $xml->asXML();
 				break;
 			default:
 				return $this->response_body;
@@ -108,7 +122,7 @@ class Spider {
 				CURLOPT_URL => $this->url,
 				CURLOPT_RETURNTRANSFER => true,
 				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_MAXREDIRS => $this->max_redirs,
 				CURLOPT_SSL_VERIFYPEER, $this->ssl_verify_peer,
 				CURLOPT_TIMEOUT => $this->timeout,
 				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -124,6 +138,7 @@ class Spider {
 		$this->response_body = curl_exec($this->curl);
 		$this->response_request = curl_getinfo($this->curl);
 		$this->response_error = curl_error($this->curl);
+		$this->response_error_number = curl_errno($this->curl);
 		curl_close($this->curl);
 	}
 }
