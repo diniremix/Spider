@@ -70,6 +70,10 @@ if ($req->hasError()){
 - **constructRequest**: this method construct a request using multiple options for a [cURL transfer](http://php.net/manual/en/function.curl-setopt-array.php)
 
 
+## Examples
+see [examples folder](examples/)
+
+
 ## license
 The full text of the license can be found in the file **LGPL.txt**
 
