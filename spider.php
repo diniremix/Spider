@@ -78,7 +78,7 @@ class Spider {
 		return $this->response_headers;
 	}
 
-	public function setHeader($headers) {
+	public function setHeader($headers='default') {
 		switch ($headers) {
 			case 'default':
 			case 'json':
@@ -102,7 +102,7 @@ class Spider {
 		}
 	}
 
-	public function addHeaders($headers) {
+	public function addHeaders($headers=null) {
 		array_push($this->headers, $headers);
 	}
 
