@@ -8,8 +8,6 @@ $req->setHeader("xml");
 
 $req->send();
 
-header('Content-type: application/xml');
-
 // function to convert an array to XML using SimpleXML
 // https://stackoverflow.com/questions/17428323/convert-multidimensional-array-into-xml
 function array_to_xml($array, &$xml) {
@@ -26,6 +24,8 @@ function array_to_xml($array, &$xml) {
         }
     }
 }
+
+header('Content-type: application/xml');
 
 if ($req->hasError()){
 	$badResponse = array(
@@ -45,4 +45,3 @@ if ($req->hasError()){
 	$resp = $req->getBody('xml');
 	echo $resp;
 }
-
