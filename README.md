@@ -1,5 +1,5 @@
 # Spider
-http request easy, using curl
+http request easy, using [**curl**](http://php.net/manual/en/book.curl.php)
 
 ## Install
 Clone this repo
@@ -11,10 +11,20 @@ Download a stable version from **Spider** [here](https://github.com/diniremix/sp
 
 
 ## how to use
+
 ```php
 $req = new Spider("https://httpbin.org/get", "GET");
 $req->setHeader("default"); // set default "Content-Type: application/json"
 $req->send();
+
+//handle response
+if ($req->hasError()){
+	//do stuff
+    echo $req->getBody();
+}else{
+	//an error ocurred
+    echo $req->getErrorMessage();
+}
 ```
 
 
@@ -39,9 +49,25 @@ $req->send();
 
 
 ## Methods
-- **getStatusCode**: return a [http_code](http://php.net/manual/en/function.curl-getinfo.php) from request.
-- **getBody**: return a body from request.
-- **addHeaders**: add extra headers
+
+### Public Methods
+
+- **getRequest**: return full response request from [curl](http://php.net/manual/en/book.curl.php)
+- **getHeaderLine**: get specific result from response request, return `content_type` by default
+- **getStatusCode**: get status code from response using [http_code](http://php.net/manual/en/function.curl-getinfo.php)
+- **body**: set the body of the request to send
+- **hasError**: get the last error number from [curl_errno](http://php.net/manual/en/function.curl-errno.php)
+- **getErrorMessage**: get a string containing the last error for the current session from [curl_error](http://php.net/manual/en/function.curl-error.php)
+- **getBody**: return a response body from request if `hasError` it's different from [CURLE_OK](http://php.net/manual/en/curl.constants.php)
+- **getHeaders**: `**needs more implementation**`
+- **setHeader**: set the headers of the request to send, set `Content-Type: application/json` by default
+- **addHeaders**: add extra headers (e.g. Authorization)
+- **auth**: set the `authorization: Basic` to body using `user` and `password` fields, if `basic` params is **true**
+- **send**: this method perform a [cURL session](http://php.net/manual/en/function.curl-exec.php) and [close](http://php.net/manual/en/function.curl-close.php) when finally
+
+### Private Methods
+
+- **constructRequest**: this method construct a request using multiple options for a [cURL transfer](http://php.net/manual/en/function.curl-setopt-array.php)
 
 
 ## license
@@ -52,4 +78,3 @@ The full text of the license can be found in the file **LGPL.txt**
 [Diniremix on GitHub](https://github.com/diniremix)
 
 email: *diniremix [at] gmail [dot] com*
-
