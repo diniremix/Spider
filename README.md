@@ -19,11 +19,11 @@ $req->send();
 
 //handle response
 if ($req->hasError()){
-	//do stuff
-    echo $req->getBody();
-}else{
-	//an error ocurred
+    //an error ocurred
     echo $req->getErrorMessage();
+}else{
+    //do stuff
+    echo $req->getBody();
 }
 ```
 
